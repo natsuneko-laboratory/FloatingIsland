@@ -19,18 +19,22 @@ val mapping_channel: String by project
 val mapping_version: String by project
 
 plugins {
-    // kotlin("jvm") version "1.5.31"
-    java
+    kotlin("jvm") version "2.0.0"
     idea
     `maven-publish`
 
     id("net.minecraftforge.gradle") version "[6.0,6.2)"
+
 }
 
 val jar: Jar by tasks
 
 version = mod_version
 group = mod_group_id
+
+sourceSets.main {
+    java.srcDirs("src/main/java", "src/main/kotlin")
+}
 
 base {
     archivesName = mod_id
@@ -132,6 +136,7 @@ minecraft {
 }
 
 repositories {
+    mavenCentral()
 }
 
 dependencies {
@@ -141,6 +146,11 @@ dependencies {
     // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
+
+    minecraftLibrary(kotlin("stdlib"))
+    minecraftLibrary(kotlin("stdlib-common"))
+    minecraftLibrary(kotlin("stdlib-jdk8"))
+    minecraftLibrary(kotlin("reflect"))
 }
 
 tasks.jar {
@@ -192,9 +202,32 @@ tasks.named<Jar>("jar").configure {
     finalizedBy("reobfJar")
 }
 
+tasks.named("compileJava", JavaCompile::class.java) {
+    options.compilerArgumentProviders.add(CommandLineArgumentProvider {
+        // Provide compiled Kotlin classes to javac – needed for Java/Kotlin mixed sources to work
+        listOf("--patch-module", "com.natsuneko.floatingisland=${sourceSets["main"].output.asPath}")
+    })
+}
+
+/*
+setOf(sourceSets.main, sourceSets.test)
+    .map(Provider<SourceSet>::get)
+    .forEach { sourceSet ->
+        val mutClassesDirs = sourceSet.output.classesDirs as ConfigurableFileCollection
+        val javaClassDir = sourceSet.java.classesDirectory.get()
+        val mutClassesFrom = mutClassesDirs.from
+            .filter {
+                val toCompare = (it as? Provider<*>)?.get()
+                return@filter javaClassDir != toCompare
+            }
+            .toMutableSet()
+        mutClassesDirs.setFrom(mutClassesFrom)
+    }
+ */
+
 publishing {
     publications {
-        register<MavenPublication>("mavenJava") {
+        register<MavenPublication>("maven") {
             artifact(jar)
         }
     }

@@ -45,6 +45,7 @@ bin/
 
 # Minecraft Forge
 forge*changelog.txt
+run/crash-reports/
 
 # Misc
 *.log
