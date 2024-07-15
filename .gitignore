@@ -51,3 +51,6 @@ run/crash-reports/
 *.log
 *.logs
 *.log.gz
+
+run/
+run-data/

@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "com.natsuneko.floating-island",
+    "name": "Floating Island",
+    "description": "Floating Island Revived",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["Natsuneko"],
+    "credits": "Natsuneko",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

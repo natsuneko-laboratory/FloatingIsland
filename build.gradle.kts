@@ -18,13 +18,23 @@ val loader_version_range: String by project
 val mapping_channel: String by project
 val mapping_version: String by project
 
+buildscript {
+    repositories {
+        mavenCentral()
+        maven("https://files.minecraftforge.net/maven")
+    }
+
+    dependencies {
+        classpath("net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT")
+    }
+}
+
+apply(plugin = "net.minecraftforge.gradle.forge")
+
 plugins {
     kotlin("jvm") version "2.0.0"
     idea
     `maven-publish`
-
-    id("net.minecraftforge.gradle") version "[6.0,6.2)"
-
 }
 
 val jar: Jar by tasks
@@ -41,11 +51,13 @@ base {
 }
 
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
+    toolchain.languageVersion = JavaLanguageVersion.of(8)
     withSourcesJar()
 }
 
 minecraft {
+    version = minecraft_version
+    // runDir = "run"
     // The mappings can be changed at any time and must be in the following format.
     // Channel:   Version:
     // official   MCVersion  Official field/method names from Mojang mapping files
@@ -60,13 +72,15 @@ minecraft {
     // Use non-default mappings at your own risk. They may not always work.
     // Simply re-run your setup task after changing the mappings to update your workspace.
     // mappings channel: mapping_channel, version: mapping_version
+    // mappings = "${mapping_channel}_${mapping_version}"
+    /*
     mappings(
         mutableMapOf<String, String>(
             "channel" to mapping_channel,
             "version" to mapping_version
         )
     )
-
+    */
     // When true, this property will have all Eclipse/IntelliJ IDEA run configurations run the "prepareX" task for the given run configuration before launching the game.
     // In most cases, it is not necessary to enable.
     // enableEclipsePrepareRuns = true
@@ -75,7 +89,7 @@ minecraft {
     // This property allows configuring Gradle's ProcessResources task(s) to run on IDE output locations before launching the game.
     // It is REQUIRED to be set to true for this template to function.
     // See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
-    copyIdeResources.set(true)
+    // copyIdeResources.set(true)
 
     // When true, this property will add the folder name of all declared run configurations to generated IDE run configurations.
     // The folder name can be set on a run configuration using the "folderName" property.
@@ -92,6 +106,7 @@ minecraft {
 
     // Default run configurations.
     // These can be tweaked, removed, or duplicated as needed.
+    /*
     runs {
         // applies to all the run configs below
         configureEach {
@@ -133,6 +148,7 @@ minecraft {
             )
         }
     }
+    */
 }
 
 repositories {
@@ -145,12 +161,14 @@ dependencies {
     // The "userdev" classifier will be requested and setup by ForgeGradle.
     // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
+    /*
     minecraft("net.minecraftforge:forge:${minecraft_version}-${forge_version}")
 
     minecraftLibrary(kotlin("stdlib"))
     minecraftLibrary(kotlin("stdlib-common"))
     minecraftLibrary(kotlin("stdlib-jdk8"))
     minecraftLibrary(kotlin("reflect"))
+    */
 }
 
 tasks.jar {
