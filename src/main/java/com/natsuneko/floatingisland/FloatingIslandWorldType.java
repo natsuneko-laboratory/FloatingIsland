@@ -2,7 +2,7 @@ package com.natsuneko.floatingisland;
 
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
-import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.gen.IChunkGenerator;
 
 public class FloatingIslandWorldType extends WorldType {
     public FloatingIslandWorldType() {

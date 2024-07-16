@@ -8,7 +8,7 @@ pluginManagement {
         // maven(url = uri("https://maven.minecraftforge.net/")) { name = "Minecraft Forge" }
     }
     plugins {
-        kotlin("jvm") version "2.0.0"
+        kotlin("jvm") version "1.1.1"
     }
 }
 

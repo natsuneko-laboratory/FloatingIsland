@@ -2,7 +2,7 @@ import java.util.Date
 import java.text.SimpleDateFormat
 
 // declare
-val mod_id: String by project
+val mod_id: String by extra
 val mod_group_id: String by project
 val mod_name: String by project
 val mod_version: String by project
@@ -26,13 +26,15 @@ buildscript {
 
     dependencies {
         classpath("net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT")
+        classpath("gradle.plugin.org.jetbrains.kotlin:kotlin-gradle-plugin:1.1.1")
     }
 }
 
 apply(plugin = "net.minecraftforge.gradle.forge")
+apply(plugin = "org.jetbrains.kotlin.jvm")
 
 plugins {
-    kotlin("jvm") version "2.0.0"
+    // kotlin("jvm") version "1.1.1"
     idea
     `maven-publish`
 }

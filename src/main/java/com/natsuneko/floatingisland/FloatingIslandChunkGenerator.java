@@ -14,11 +14,7 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.chunk.IChunkGenerator;
-import net.minecraft.world.gen.ChunkProviderSettings;
-import net.minecraft.world.gen.MapGenRavine;
-import net.minecraft.world.gen.NoiseGeneratorOctaves;
-import net.minecraft.world.gen.NoiseGeneratorPerlin;
+import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
 import net.minecraft.world.gen.structure.*;
@@ -52,7 +48,7 @@ public class FloatingIslandChunkGenerator implements IChunkGenerator {
     private MapGenScatteredFeature _scatteredFeatureGenerator = new MapGenScatteredFeature();
     private MapGenRavine _ravineGenerator = new MapGenRavine();
     private StructureOceanMonument _oceanMonumentGenerator = new StructureOceanMonument();
-    private ChunkProviderSettings _settings;
+    private ChunkGeneratorSettings _settings;
     private Biome[] _biomesForGeneration;
     private double[] _mainNoiseRegion;
     private double[] _minLimitRegion;
@@ -88,7 +84,7 @@ public class FloatingIslandChunkGenerator implements IChunkGenerator {
         }
 
         if (generatorOptions != null) {
-            this._settings = ChunkProviderSettings.Factory.jsonToFactory(generatorOptions).build();
+            this._settings = ChunkGeneratorSettings.Factory.jsonToFactory(generatorOptions).build();
             world.setSeaLevel(this._settings.seaLevel);
         }
 
@@ -246,7 +242,7 @@ public class FloatingIslandChunkGenerator implements IChunkGenerator {
     }
 
     @Override
-    public Chunk provideChunk(int x, int z) {
+    public Chunk generateChunk(int x, int z) {
         this._rand.setSeed((long) x * 341873128712L + (long) z * 132897987541L);
 
         ChunkPrimer primer = new ChunkPrimer();
@@ -518,11 +514,11 @@ public class FloatingIslandChunkGenerator implements IChunkGenerator {
 
         if (creatureType == EnumCreatureType.MONSTER) {
             if (this._scatteredFeatureGenerator.isSwampHut(pos)) {
-                return this._scatteredFeatureGenerator.getScatteredFeatureSpawnList();
+                return this._scatteredFeatureGenerator.getMonsters();
             }
 
             if (this._oceanMonumentGenerator.isPositionInStructure(this._world, pos)) {
-                return this._oceanMonumentGenerator.getScatteredFeatureSpawnList();
+                return this._oceanMonumentGenerator.getMonsters();
             }
         }
 
@@ -531,9 +527,9 @@ public class FloatingIslandChunkGenerator implements IChunkGenerator {
 
     @Nullable
     @Override
-    public BlockPos getStrongholdGen(World worldIn, String structureName, BlockPos position, boolean p_180513_4_) {
+    public BlockPos getNearestStructurePos(World worldIn, String structureName, BlockPos position, boolean p_180513_4_) {
         if (structureName.equals("Stronghold")) {
-            return this._strongholdGenerator.getClosestStrongholdPos(worldIn, position, p_180513_4_);
+            return this._strongholdGenerator.getNearestStructurePos(worldIn, position, p_180513_4_);
         }
 
         if (structureName.equals("Mansion")) {
@@ -541,19 +537,19 @@ public class FloatingIslandChunkGenerator implements IChunkGenerator {
         }
 
         if (structureName.equals("Monument")) {
-            return this._oceanMonumentGenerator.getClosestStrongholdPos(worldIn, position, p_180513_4_);
+            return this._oceanMonumentGenerator.getNearestStructurePos(worldIn, position, p_180513_4_);
         }
 
         if (structureName.equals("Village")) {
-            return this._villageGenerator.getClosestStrongholdPos(worldIn, position, p_180513_4_);
+            return this._villageGenerator.getNearestStructurePos(worldIn, position, p_180513_4_);
         }
 
         if (structureName.equals("Mineshaft")) {
-            return this._mineshaftGenerator.getClosestStrongholdPos(worldIn, position, p_180513_4_);
+            return this._mineshaftGenerator.getNearestStructurePos(worldIn, position, p_180513_4_);
         }
 
         if (structureName.equals("Temple")) {
-            return this._scatteredFeatureGenerator.getClosestStrongholdPos(worldIn, position, p_180513_4_);
+            return this._scatteredFeatureGenerator.getNearestStructurePos(worldIn, position, p_180513_4_);
         }
 
         return null;
@@ -587,5 +583,10 @@ public class FloatingIslandChunkGenerator implements IChunkGenerator {
             this.woodlandMansionGenerator.generate(this._world, x, z, (ChunkPrimer)null);
         }
         */
+    }
+
+    @Override
+    public boolean isInsideStructure(World world, String s, BlockPos blockPos) {
+        return false;
     }
 }
