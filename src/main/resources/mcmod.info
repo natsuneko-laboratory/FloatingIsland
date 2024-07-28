@@ -1,8 +1,8 @@
 [
   {
-    "modid": "com.natsuneko.floating-island",
-    "name": "Floating Island",
-    "description": "Floating Island Revived",
+    "modid": "floating-island-revived",
+    "name": "Floating Island Revived",
+    "description": "Floating Island Revived - 2024 Edition",
     "version": "${version}",
     "mcversion": "${mcversion}",
     "url": "",

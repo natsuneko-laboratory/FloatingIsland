@@ -9,17 +9,17 @@ modLoader="javafml" #mandatory
 loaderVersion="${loader_version_range}" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 # The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
 # Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
-license="${mod_license}"
+license="MIT"
 # A URL to refer people to when problems occur with this mod
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
-modId="floating-island" #mandatory
+modId="floating-island-revived" #mandatory
 # The version number of the mod
 version="${mod_version}" #mandatory
 # A display name for the mod
-displayName="${mod_name}" #mandatory
+displayName="Floating Island Revived 2024" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
@@ -32,9 +32,12 @@ displayName="${mod_name}" #mandatory
 authors="${mod_authors}" #optional
 
 # The description text for the mod (multi line!) (#mandatory)
-description='''${mod_description}'''
+description='''
+Revived Version of Floating Island. Edition 2024.
+NOTE: The World Generation Algorithm is not compatible, this is just a visual reproduction.
+'''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.'floating-island']] #optional
+[[dependencies.'floating-island-revived']] #optional
 # the modid of the dependency
 modId="forge" #mandatory
 # Does this dependency have to exist - if not, ordering below must be specified
@@ -48,7 +51,7 @@ ordering="NONE"
 # Side this dependency is applied on - BOTH, CLIENT, or SERVER
 side="BOTH"
 # Here's another dependency
-[[dependencies.'floating-island']]
+[[dependencies.'floating-island-revived']]
 modId="minecraft"
 mandatory=true
 # This version range declares a minimum of the current minecraft version up to but not including the next major version
