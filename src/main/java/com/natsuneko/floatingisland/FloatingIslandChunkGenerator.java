@@ -17,7 +17,6 @@ import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.structure.SwampHutStructure;
 import net.minecraftforge.event.terraingen.InitNoiseGensEvent;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -215,8 +214,8 @@ public class FloatingIslandChunkGenerator extends AbstractChunkGenerator<Overwor
         chunkIn.createHeightMap(Heightmap.Type.WORLD_SURFACE_WG, Heightmap.Type.OCEAN_FLOOR_WG);
 
         // this._biomesForGeneration = this.biomeProvider.getBiomes(x * 16, z * 16, 16, 16);
-        this.replaceIslandBlocks(x, z, chunkIn, biomes);
         this.buildSurface(chunkIn, biomes, random, this.world.getSeaLevel());
+        this.replaceIslandBlocks(x, z, chunkIn, biomes);
         chunkIn.createHeightMap(Heightmap.Type.WORLD_SURFACE_WG, Heightmap.Type.OCEAN_FLOOR_WG);
         chunkIn.setStatus(ChunkStatus.BASE);
     }
@@ -247,7 +246,7 @@ public class FloatingIslandChunkGenerator extends AbstractChunkGenerator<Overwor
                 float f3 = 0.0F;
                 float f4 = 0.0F;
                 int i1 = 2;
-                Biome biome =biomes[k + 2 + (l + 2) * 10];
+                Biome biome = biomes[k + 2 + (l + 2) * 10];
 
                 for (int j1 = -2; j1 <= 2; ++j1) {
                     for (int k1 = -2; k1 <= 2; ++k1) {
