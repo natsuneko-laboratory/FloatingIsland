@@ -331,112 +331,24 @@ public class FloatingIslandChunkGenerator extends AbstractChunkGenerator<Overwor
         }
     }
 
-    /*
-    @Override
-    public void populate(int x, int z) {
-        BlockFalling.fallInstantly = true;
 
-        int i = x * 16;
-        int j = z * 16;
-        BlockPos blockPos = new BlockPos(i, 0, j);
-        Biome biome = this._world.getBiome(blockPos.add(16, 0, 16));
 
-        this._rand.setSeed(this._world.getSeed());
 
-        long k = this._rand.nextLong() / 2L * 2L + 1L;
-        long l = this._rand.nextLong() / 2L * 2L + 1L;
 
-        this._rand.setSeed((long) x * k + (long) z * l ^ this._world.getSeed());
 
-        boolean hasVillageGenerated = false;
-        ChunkPos chunkPos = new ChunkPos(x, z);
-        ForgeEventFactory.onChunkPopulate(true, this, this._world, this._rand, x, z, hasVillageGenerated);
 
-        if (this._settings.useMineShafts) {
-            this._mineshaftGenerator.generateStructure(this._world, this._rand, chunkPos);
-        }
-        if (this._settings.useVillages) {
-            hasVillageGenerated = this._villageGenerator.generateStructure(this._world, this._rand, chunkPos);
-        }
-        if (this._settings.useStrongholds) {
-            this._strongholdGenerator.generateStructure(this._world, this._rand, chunkPos);
-        }
-        if (this._settings.useTemples) {
-            this._scatteredFeatureGenerator.generateStructure(this._world, this._rand, chunkPos);
-        }
-        if (this._settings.useMonuments) {
-            this._oceanMonumentGenerator.generateStructure(this._world, this._rand, chunkPos);
-        }
-        if (this._settings.useMansions) {
-            //
-        }
 
-        if (biome != Biomes.DESERT && biome != Biomes.DESERT_HILLS) {
-            if (this._settings.useWaterLakes && !hasVillageGenerated && this._rand.nextInt(this._settings.waterLakeChance) == 0) {
-                if (TerrainGen.populate(this, this._world, this._rand, x, z, hasVillageGenerated, PopulateChunkEvent.Populate.EventType.LAKE)) {
-                    int xInChunk = this._rand.nextInt(16) + 8;
-                    int yInChunk = this._rand.nextInt(256);
-                    int zInChunk = this._rand.nextInt(16) + 8;
 
-                    (new WorldGenLakes(Blocks.WATER)).generate(this._world, this._rand, blockPos.add(xInChunk, yInChunk, zInChunk));
-                }
+
+
+            }
+
+            }
+
             }
         }
 
-        if (this._settings.useLavaLakes && !hasVillageGenerated && this._rand.nextInt(this._settings.lavaLakeChance / 10) == 0) {
-            if (TerrainGen.populate(this, this._world, this._rand, x, z, hasVillageGenerated, PopulateChunkEvent.Populate.EventType.LAKE)) {
-                int xInChunk = this._rand.nextInt(16) + 8;
-                int yInChunk = this._rand.nextInt(this._rand.nextInt(248) + 8);
-                int zInChunk = this._rand.nextInt(16) + 8;
-
-                if (yInChunk < this._world.getSeaLevel() || this._rand.nextInt(this._settings.lavaLakeChance / 8) == 0) {
-                    (new WorldGenLakes(Blocks.LAVA)).generate(this._world, this._rand, blockPos.add(xInChunk, yInChunk, zInChunk));
-                }
-            }
-        }
-
-        if (this._settings.useDungeons) {
-            if (TerrainGen.populate(this, this._world, this._rand, x, z, hasVillageGenerated, PopulateChunkEvent.Populate.EventType.DUNGEON)) {
-                for (int o = 0; o < this._settings.dungeonChance; o++) {
-                    int xInChunk = this._rand.nextInt(16) + 8;
-                    int yInChunk = this._rand.nextInt(256);
-                    int zInChunk = this._rand.nextInt(16) + 8;
-
-                    (new WorldGenDungeons()).generate(this._world, this._rand, blockPos.add(xInChunk, yInChunk, zInChunk));
-
-                }
-            }
-        }
-
-        biome.decorate(this._world, this._rand, new BlockPos(i, 0, j));
-
-        if (TerrainGen.populate(this, this._world, this._rand, x, z, hasVillageGenerated, PopulateChunkEvent.Populate.EventType.ANIMALS)) {
-            WorldEntitySpawner.performWorldGenSpawning(this._world, biome, i + 8, j + 8, 16, 16, this._rand);
-        }
-
-        blockPos = blockPos.add(8, 0, 8);
-
-        if (TerrainGen.populate(this, this._world, this._rand, x, z, hasVillageGenerated, PopulateChunkEvent.Populate.EventType.ICE)) {
-            for (int k2 = 0; k2 < 16; k2++) {
-                for (int j3 = 0; j3 < 16; j3++) {
-                    BlockPos a = this._world.getPrecipitationHeight(blockPos.add(k2, 0, j3));
-                    BlockPos b = a.down();
-
-                    if (this._world.canBlockFreezeWater(b)) {
-                        this._world.setBlockState(b, Blocks.ICE.getDefaultState(), 2);
-                    }
-
-                    if (this._world.canSnowAt(b, true)) {
-                        this._world.setBlockState(b, Blocks.SNOW_LAYER.getDefaultState(), 2);
-                    }
-                }
-            }
-        }
-
-        ForgeEventFactory.onChunkPopulate(false, this, this._world, this._rand, x, z, hasVillageGenerated);
-        BlockFalling.fallInstantly = false;
     }
-    */
 
 
     @Override
