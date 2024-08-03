@@ -331,26 +331,6 @@ public class FloatingIslandChunkGenerator extends AbstractChunkGenerator<Overwor
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-            }
-
-            }
-
-            }
-        }
-
-    }
-
-
     @Override
     public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
         Biome biome = this.world.getBiome(pos);
