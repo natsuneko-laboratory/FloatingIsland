@@ -12,11 +12,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldEntitySpawner;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeDecorator;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.ChunkPrimer;
 import net.minecraft.world.gen.*;
 import net.minecraft.world.gen.feature.WorldGenDungeons;
 import net.minecraft.world.gen.feature.WorldGenLakes;
+import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.structure.*;
 import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.terraingen.InitMapGenEvent;
@@ -470,6 +472,12 @@ public class FloatingIslandChunkGenerator implements IChunkGenerator {
 
         biome.decorate(this._world, this._rand, new BlockPos(i, 0, j));
 
+        // Adjust Difficulty - RedStone and Diamond
+        if (TerrainGen.populate(this, this._world, this._rand, x, z, hasVillageGenerated, PopulateChunkEvent.Populate.EventType.CUSTOM)) {
+            FloatingIslandBiomeDecorator decorator = new FloatingIslandBiomeDecorator();
+            decorator.generateAdditionalOres(this._world, this._rand, biome, new BlockPos(i, 0, j));
+        }
+
         if (TerrainGen.populate(this, this._world, this._rand, x, z, hasVillageGenerated, PopulateChunkEvent.Populate.EventType.ANIMALS)) {
             WorldEntitySpawner.performWorldGenSpawning(this._world, biome, i + 8, j + 8, 16, 16, this._rand);
         }
@@ -588,5 +596,27 @@ public class FloatingIslandChunkGenerator implements IChunkGenerator {
     @Override
     public boolean isInsideStructure(World world, String s, BlockPos blockPos) {
         return false;
+    }
+
+    static class FloatingIslandBiomeDecorator extends BiomeDecorator {
+        public void generateAdditionalOres(World worldIn, Random random, Biome biome, BlockPos pos) {
+            if (this.decorating) {
+                throw new RuntimeException("Already decorating");
+            } else {
+                this.decorating = true;
+                this.chunkPos = pos;
+
+                this.chunkProviderSettings = ChunkGeneratorSettings.Factory.jsonToFactory(worldIn.getWorldInfo().getGeneratorOptions()).build();
+                this.redstoneGen = new WorldGenMinable(Blocks.REDSTONE_ORE.getDefaultState(), this.chunkProviderSettings.redstoneSize);
+                this.diamondGen = new WorldGenMinable(Blocks.DIAMOND_ORE.getDefaultState(), this.chunkProviderSettings.diamondSize);
+
+                if (net.minecraftforge.event.terraingen.TerrainGen.generateOre(worldIn, random, redstoneGen, chunkPos, net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.REDSTONE))
+                    this.genStandardOre1(worldIn, random, this.chunkProviderSettings.redstoneCount, this.redstoneGen, 0, 42);
+                if (net.minecraftforge.event.terraingen.TerrainGen.generateOre(worldIn, random, diamondGen, chunkPos, net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable.EventType.DIAMOND))
+                    this.genStandardOre1(worldIn, random, this.chunkProviderSettings.diamondCount, this.diamondGen, 0, 42);
+
+                this.decorating = false;
+            }
+        }
     }
 }
