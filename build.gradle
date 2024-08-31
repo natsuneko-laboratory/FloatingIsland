@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net/' }
@@ -14,9 +15,21 @@ apply plugin: 'maven-publish'
 version = '2024.07.28.1902'
 group = 'com.natsuneko.floating-island-revived' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'FloatingIsland-Revived'
+=======
+plugins {
+	id 'fabric-loom' version '1.7-SNAPSHOT'
+	id 'maven-publish'
+}
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+version = project.mod_version
+group = project.maven_group
+>>>>>>> Stashed changes
 
+base {
+	archivesName = project.archives_base_name
+}
+
+<<<<<<< Updated upstream
 minecraft {
     // The mappings can be changed at any time, and must be in the following format.
     // snapshot_YYYYMMDD   Snapshot are built nightly.
@@ -27,16 +40,22 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 
     // accessTransformer = file('build/resources/main/META-INF/accesstransformer.cfg')
+=======
+repositories {
+	// Add repositories to retrieve artifacts from in here.
+	// You should only use this when depending on other mods because
+	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
+	// for more information about repositories.
+}
+>>>>>>> Stashed changes
 
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
-    runs {
-        client {
-            workingDirectory project.file('run')
+loom {
+	splitEnvironmentSourceSets()
 
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
+	accessWidenerPath = file("src/main/resources/floating-island.accesswidener")
 
+<<<<<<< Updated upstream
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
 
@@ -89,23 +108,57 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
+=======
+	mods {
+		"floating-island" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+
 }
 
-// Example for how to get properties into the manifest for reading by the runtime..
+dependencies {
+	// To change the versions see the gradle.properties file
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+
+	// Fabric API. This is technically optional, but you probably want it anyway.
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") {
+		expand "version": project.version
+	}
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.release = 17
+}
+
+java {
+	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+	// if it is present.
+	// If you remove this line, sources will not be generated.
+	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+>>>>>>> Stashed changes
+}
+
 jar {
-    manifest {
-        attributes([
-            "Specification-Title": "FloatingIsland",
-            "Specification-Vendor": "Natsuneko Laboratory",
-            "Specification-Version": "1", // We are version 1 of ourselves
-            "Implementation-Title": project.name,
-            "Implementation-Version": "${version}",
-            "Implementation-Vendor" :"Natsuneko Laboratory",
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
-    }
+	from("LICENSE") {
+		rename { "${it}_${project.base.archivesName.get()}"}
+	}
 }
 
+<<<<<<< Updated upstream
 // Example configuration to allow publishing using the maven-publish task
 // we define a custom artifact that is sourced from the reobfJar output task
 // and then declare that to be published
@@ -126,4 +179,22 @@ publishing {
             url "file:///${project.projectDir}/mcmodsrepo"
         }
     }
+=======
+// configure the maven publication
+publishing {
+	publications {
+		create("mavenJava", MavenPublication) {
+			artifactId = project.archives_base_name
+			from components.java
+		}
+	}
+
+	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
+	repositories {
+		// Add repositories to publish to here.
+		// Notice: This block does NOT have the same function as the block in the top level.
+		// The repositories here will be used for publishing your artifact, not for
+		// retrieving dependencies.
+	}
+>>>>>>> Stashed changes
 }

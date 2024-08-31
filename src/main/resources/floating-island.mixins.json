@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "com.natsuneko.floatingisland.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"ChunkNoiseSamplerMixin",
+		"WorldPresetMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
