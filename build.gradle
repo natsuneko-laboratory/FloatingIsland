@@ -1,21 +1,4 @@
-<<<<<<< Updated upstream
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net/' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '3.+', changing: true
-    }
-}
-apply plugin: 'net.minecraftforge.gradle'
-// Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
-apply plugin: 'maven-publish'
 
-version = '2024.07.28.1902'
-group = 'com.natsuneko.floating-island-revived' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'FloatingIsland-Revived'
-=======
 plugins {
 	id 'fabric-loom' version '1.7-SNAPSHOT'
 	id 'maven-publish'
@@ -23,24 +6,11 @@ plugins {
 
 version = project.mod_version
 group = project.maven_group
->>>>>>> Stashed changes
 
 base {
 	archivesName = project.archives_base_name
 }
 
-<<<<<<< Updated upstream
-minecraft {
-    // The mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   Snapshot are built nightly.
-    // stable_#            Stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not always work.
-    // Simply re-run your setup task after changing the mappings to update your workspace.
-    mappings channel: 'snapshot', version: '20180921-1.13'
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
-
-    // accessTransformer = file('build/resources/main/META-INF/accesstransformer.cfg')
-=======
 repositories {
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
@@ -48,67 +18,12 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 }
->>>>>>> Stashed changes
 
 loom {
 	splitEnvironmentSourceSets()
 
 	accessWidenerPath = file("src/main/resources/floating-island.accesswidener")
 
-<<<<<<< Updated upstream
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-
-            // Recommended logging level for the console
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                examplemod {
-                    source sourceSets.main
-                }
-            }
-        }
-    }
-}
-
-dependencies {
-    // Specify the version of Minecraft to use, If this is any group other then 'net.minecraft' it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency. And it's patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
-    minecraft 'net.minecraftforge:forge:1.13.2-25.0.223'
-
-    // You may put jars on which you depend on in ./libs or you may define them like so..
-    // compile "some.group:artifact:version:classifier"
-    // compile "some.group:artifact:version"
-
-    // Real examples
-    // compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    // compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
-
-    // The 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    // provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // These dependencies get remapped to your current MCP mappings
-    // deobf 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
-=======
 	mods {
 		"floating-island" {
 			sourceSet sourceSets.main
@@ -126,7 +41,7 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	
+
 }
 
 processResources {
@@ -149,7 +64,6 @@ java {
 
 	sourceCompatibility = JavaVersion.VERSION_17
 	targetCompatibility = JavaVersion.VERSION_17
->>>>>>> Stashed changes
 }
 
 jar {
@@ -158,28 +72,6 @@ jar {
 	}
 }
 
-<<<<<<< Updated upstream
-// Example configuration to allow publishing using the maven-publish task
-// we define a custom artifact that is sourced from the reobfJar output task
-// and then declare that to be published
-// Note you'll need to add a repository here
-def reobfFile = file("$buildDir/reobfJar/output.jar")
-def reobfArtifact = artifacts.add('default', reobfFile) {
-    type 'jar'
-    builtBy 'reobfJar'
-}
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            artifact reobfArtifact
-        }
-    }
-    repositories {
-        maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
-        }
-    }
-=======
 // configure the maven publication
 publishing {
 	publications {
@@ -196,5 +88,4 @@ publishing {
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
 	}
->>>>>>> Stashed changes
 }
