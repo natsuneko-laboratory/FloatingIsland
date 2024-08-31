@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "floating-island",
+	"version": "${version}",
+	"name": "Floating Island",
+	"description": "This is an example description! Tell everyone what your mod is about!",
+	"authors": [
+		"Natsuneko"
+	],
+	"contact": {
+		"homepage": "https://natsuneko.com/",
+		"sources": "https://github.com/natsuneko-laboratory/FloatingIsland"
+	},
+	"license": "MIT",
+	"icon": "assets/floating-island/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"com.natsuneko.floatingisland.FloatingIsland"
+		],
+		"client": [
+			"com.natsuneko.floatingisland.FloatingIslandClient"
+		]
+	},
+	"mixins": [
+		"floating-island.mixins.json",
+		{
+			"config": "floating-island.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.16.3",
+		"minecraft": "~1.19.2",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+	},
+	"accessWidener": "floating-island.accesswidener"
+}
