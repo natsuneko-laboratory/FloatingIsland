@@ -1,18 +1,32 @@
 # Floating Island Revived 2024
 
 A Minecraft mod that adds a floating island **World Type** to the game.
+This is a visually salvaged version of a previously existing mod, and there is no code compatibility.
 
 ## ScreenShot
 
-| World Surface                                                                                           | Village                                                                                                 |
-| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| ![2024-07-28_18 56 09](https://github.com/user-attachments/assets/ad32a8a1-f98f-4f47-93d7-7ef6b96b1aaa) | ![2024-07-28_18 57 11](https://github.com/user-attachments/assets/c9d943c6-9102-4d2e-a7f3-051227e72aba) |
+### 1.12
 
-## Supported Versions
+| Surface | Surface |
+| ------- | ------- |
+| ![](https://media.natsuneko.cat/2024-08-03_18.34.17.png) | ![](https://media.natsuneko.cat/2024-08-03_18.46.35.png) |
 
-- Minecraft 1.13.x
+### 1.19
 
-* Minecraft 1.12.x
+| Surface | Cave under the Sea |
+| ------- | ------------------ |
+| ![](https://media.natsuneko.cat/2024-09-01_21.36.49.png) | ![](https://media.natsuneko.cat/2024-09-01_21.37.27.png) |
+
+## Versions
+
+- Minecraft 1.19.x (Fabric)
+- Minecraft 1.13.x (Forge)
+- Minecraft 1.12.x (Forge)
+
+## Downloads
+
+- [Modrinth](https://modrinth.com/mod/floating-island-revived)
+- [CurseForge](https://www.curseforge.com/minecraft/mc-mods/floating-island-revived)
 
 ## License
 
