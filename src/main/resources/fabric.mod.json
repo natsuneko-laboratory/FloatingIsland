@@ -2,8 +2,8 @@
 	"schemaVersion": 1,
 	"id": "floating-island",
 	"version": "${version}",
-	"name": "Floating Island",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Floating Island Revived",
+	"description": "A mod that adds a floating island World Type to the game.",
 	"authors": [
 		"Natsuneko"
 	],
@@ -17,17 +17,10 @@
 	"entrypoints": {
 		"main": [
 			"com.natsuneko.floatingisland.FloatingIsland"
-		],
-		"client": [
-			"com.natsuneko.floatingisland.FloatingIslandClient"
 		]
 	},
 	"mixins": [
-		"floating-island.mixins.json",
-		{
-			"config": "floating-island.client.mixins.json",
-			"environment": "client"
-		}
+		"floating-island.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.16.3",
