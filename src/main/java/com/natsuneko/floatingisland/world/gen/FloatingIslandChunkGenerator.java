@@ -1,55 +1,37 @@
 package com.natsuneko.floatingisland.world.gen;
 
-import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.structure.StructureSet;
-import net.minecraft.util.dynamic.RegistryOps;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.noise.DoublePerlinNoiseSampler;
 import net.minecraft.util.math.random.CheckedRandom;
 import net.minecraft.util.math.random.ChunkRandom;
 import net.minecraft.util.math.random.RandomSeed;
-import net.minecraft.util.registry.Registry;
-import net.minecraft.util.registry.RegistryEntry;
-import net.minecraft.world.ChunkRegion;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.GenerationStep;
+import net.minecraft.world.gen.HeightContext;
 import net.minecraft.world.gen.StructureAccessor;
+import net.minecraft.world.gen.chunk.Blender;
 import net.minecraft.world.gen.chunk.ChunkGenerator;
 import net.minecraft.world.gen.chunk.ChunkGeneratorSettings;
 import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
 import net.minecraft.world.gen.noise.NoiseConfig;
 
 public final class FloatingIslandChunkGenerator extends NoiseChunkGenerator {
-    public static final Codec<FloatingIslandChunkGenerator> CODEC = RecordCodecBuilder.create(
-            instance -> createStructureSetRegistryGetter(instance)
-                    .and(
-                            instance.group(
-
-                                    RegistryOps.createRegistryCodec(Registry.NOISE_KEY).forGetter(generator -> generator.noiseRegistry),
-                                    BiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
-                                    ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings").forGetter(generator -> generator.settings)
-                            )
-                    )
-                    .apply(instance, instance.stable(FloatingIslandChunkGenerator::new))
+    public static final MapCodec<FloatingIslandChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(
+            instance -> instance.group(
+                    BiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
+                    ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings").forGetter(NoiseChunkGenerator::getSettings)
+            ).apply(instance, instance.stable(FloatingIslandChunkGenerator::new))
     );
 
-    private final Registry<DoublePerlinNoiseSampler.NoiseParameters> noiseRegistry;
-    private final RegistryEntry<ChunkGeneratorSettings> settings;
-
-    public FloatingIslandChunkGenerator(
-            Registry<StructureSet> structureSetRegistry,
-            Registry<DoublePerlinNoiseSampler.NoiseParameters> noiseRegistry,
-            BiomeSource populationSource,
-            RegistryEntry<ChunkGeneratorSettings> settings
-    ) {
-        super(structureSetRegistry, noiseRegistry, populationSource, settings);
-        this.noiseRegistry = noiseRegistry;
-        this.settings = settings;
+    public FloatingIslandChunkGenerator(BiomeSource biomeSource, RegistryEntry<ChunkGeneratorSettings> settings ) {
+        super(biomeSource, settings);
 
     }
 
@@ -58,16 +40,22 @@ public final class FloatingIslandChunkGenerator extends NoiseChunkGenerator {
     }
 
     @Override
-    protected Codec<? extends ChunkGenerator> getCodec() {
+    protected MapCodec<? extends ChunkGenerator> getCodec() {
         return CODEC;
     }
 
-    // NOTE: Floating Island DOES NOT have any carves. But Floating Island are generated as CAVES!!!!!!
     @Override
-    public void carve(ChunkRegion chunkRegion, long seed, NoiseConfig noiseConfig, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk, GenerationStep.Carver carverStep) {
+    public void buildSurface(Chunk chunk, HeightContext heightContext, NoiseConfig noiseConfig, StructureAccessor structureAccessor, BiomeAccess biomeAccess, Registry<Biome> biomeRegistry, Blender blender) {
+        this.buildIslands(noiseConfig, biomeAccess, structureAccessor, chunk);
+        super.buildSurface(chunk, heightContext, noiseConfig, structureAccessor, biomeAccess, biomeRegistry, blender);
+    }
+
+    // NOTE: Floating Island DOES NOT have any carves. But Floating Island are generated as CAVES!!!!!!
+    // @Override
+    public void buildIslands(NoiseConfig noiseConfig, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk) {
         ChunkRandom random = new ChunkRandom(new CheckedRandom(RandomSeed.getSeed()));
         int floorHeight = this.getSeaLevel() + random.nextInt(this.getWorldHeight() - 36 - this.getSeaLevel());
-        int height = floorHeight + random.nextInt(Math.max(this.getWorldHeight() - floorHeight, 16));
+        int height = floorHeight + random.nextInt(Math.min(Math.max(this.getWorldHeight() - floorHeight, 16), 32));
         int roundFactor = random.nextInt(10);
         int[] offset = new int[height];
 
@@ -107,6 +95,12 @@ public final class FloatingIslandChunkGenerator extends NoiseChunkGenerator {
                             state = Blocks.AIR.getDefaultState();
                             chunk.setBlockState(pos, state, true);
                             continue;
+                        } else {
+                            if (current == Blocks.AIR.getDefaultState()) {
+                                state = Blocks.STONE.getDefaultState();
+                                chunk.setBlockState(pos, state, true);
+                                continue;
+                            }
                         }
                     }
 
