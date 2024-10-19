@@ -10,10 +10,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.random.CheckedRandom;
 import net.minecraft.util.math.random.ChunkRandom;
 import net.minecraft.util.math.random.RandomSeed;
+import net.minecraft.world.ChunkRegion;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.source.BiomeAccess;
 import net.minecraft.world.biome.source.BiomeSource;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.HeightContext;
 import net.minecraft.world.gen.StructureAccessor;
 import net.minecraft.world.gen.chunk.Blender;
@@ -50,8 +52,7 @@ public final class FloatingIslandChunkGenerator extends NoiseChunkGenerator {
         super.buildSurface(chunk, heightContext, noiseConfig, structureAccessor, biomeAccess, biomeRegistry, blender);
     }
 
-    // NOTE: Floating Island DOES NOT have any carves. But Floating Island are generated as CAVES!!!!!!
-    // @Override
+    // this method work as **pre-processing** for chunk generation, generates all floating islands.
     public void buildIslands(NoiseConfig noiseConfig, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk) {
         ChunkRandom random = new ChunkRandom(new CheckedRandom(RandomSeed.getSeed()));
         int floorHeight = this.getSeaLevel() + random.nextInt(this.getWorldHeight() - 36 - this.getSeaLevel());
@@ -107,6 +108,28 @@ public final class FloatingIslandChunkGenerator extends NoiseChunkGenerator {
                     if (state == Blocks.WATER.getDefaultState()) {
                         chunk.setBlockState(pos, Blocks.AIR.getDefaultState(), false);
                         continue;
+                    }
+                }
+            }
+        }
+    }
+
+    // this method work as **post-processing** for chunk generation, leveling all rivers and lakes to sea level
+    @Override
+    public void carve(ChunkRegion chunkRegion, long seed, NoiseConfig noiseConfig, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk, GenerationStep.Carver carverStep) {
+        BlockPos.Mutable pos = new BlockPos.Mutable();
+
+        for (int x = 0; x < 16; x++) {
+            for (int z = 0; z < 16; z++) {
+                // not support minus
+                for (int y = 0; y < this.getWorldHeight(); y++) {
+                    pos.set(x, y, z);
+                    BlockState state = chunk.getBlockState(pos);
+
+                    // force replacement
+                    if (y <= this.getSeaLevel()) {
+                        state = Blocks.WATER.getDefaultState();
+                        chunk.setBlockState(pos, state, true);
                     }
                 }
             }
