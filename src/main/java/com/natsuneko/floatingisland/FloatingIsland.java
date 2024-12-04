@@ -23,6 +23,6 @@ public class FloatingIsland implements ModInitializer {
 		// This code runs as soon as Minecraft is in a mod-load-ready state.
 		// However, some things (like resources) may still be uninitialized.
 		// Proceed with mild caution.
-		Registry.register(Registries.CHUNK_GENERATOR, new Identifier(MOD_ID, "floating_island"), FloatingIslandChunkGenerator.CODEC);
+		Registry.register(Registries.CHUNK_GENERATOR,  Identifier.of(MOD_ID, "floating_island"), FloatingIslandChunkGenerator.CODEC);
 	}
 }

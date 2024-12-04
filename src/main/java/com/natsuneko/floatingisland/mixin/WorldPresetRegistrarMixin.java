@@ -49,7 +49,7 @@ public abstract class WorldPresetRegistrarMixin {
     private RegistryEntryLookup<ChunkGeneratorSettings> chunkGeneratorSettingsLookup;
 
     @Final
-    private static final RegistryKey<WorldPreset> FLOATING_ISLAND_KEY = RegistryKey.of(RegistryKeys.WORLD_PRESET, new Identifier(FloatingIsland.MOD_ID, "floating_island"));
+    private static final RegistryKey<WorldPreset> FLOATING_ISLAND_KEY = RegistryKey.of(RegistryKeys.WORLD_PRESET, Identifier.of(FloatingIsland.MOD_ID, "floating_island"));
 
 
     @Inject(method = "bootstrap()V", at = @At("RETURN"))

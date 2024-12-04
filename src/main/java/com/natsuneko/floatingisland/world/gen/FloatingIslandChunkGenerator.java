@@ -28,7 +28,7 @@ public final class FloatingIslandChunkGenerator extends NoiseChunkGenerator {
     public static final MapCodec<FloatingIslandChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     BiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
-                    ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings").forGetter(NoiseChunkGenerator::getSettings)
+                    ChunkGeneratorSettings.REGISTRY_CODEC.fieldOf("settings").forGetter(generator -> generator.getSettings())
             ).apply(instance, instance.stable(FloatingIslandChunkGenerator::new))
     );
 
@@ -116,7 +116,7 @@ public final class FloatingIslandChunkGenerator extends NoiseChunkGenerator {
 
     // this method work as **post-processing** for chunk generation, leveling all rivers and lakes to sea level
     @Override
-    public void carve(ChunkRegion chunkRegion, long seed, NoiseConfig noiseConfig, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk, GenerationStep.Carver carverStep) {
+    public void carve(ChunkRegion chunkRegion, long seed, NoiseConfig noiseConfig, BiomeAccess biomeAccess, StructureAccessor structureAccessor, Chunk chunk) {
         BlockPos.Mutable pos = new BlockPos.Mutable();
 
         for (int x = 0; x < 16; x++) {
