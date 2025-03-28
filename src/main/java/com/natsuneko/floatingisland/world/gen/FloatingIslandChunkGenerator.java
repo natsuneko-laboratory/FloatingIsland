@@ -25,6 +25,10 @@ import net.minecraft.world.gen.chunk.NoiseChunkGenerator;
 import net.minecraft.world.gen.noise.NoiseConfig;
 
 public final class FloatingIslandChunkGenerator extends NoiseChunkGenerator {
+    private static final int STATE_STATIC = 0;
+    private static final int STATE_MOVING = 1;
+    // private static final int STATE_ENTITY_RAIL_BLOCK = 64;
+
     public static final MapCodec<FloatingIslandChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(
             instance -> instance.group(
                     BiomeSource.CODEC.fieldOf("biome_source").forGetter(generator -> generator.biomeSource),
@@ -78,13 +82,13 @@ public final class FloatingIslandChunkGenerator extends NoiseChunkGenerator {
                     // force replacement
                     if (y <= this.getSeaLevel()) {
                         state = Blocks.WATER.getDefaultState();
-                        chunk.setBlockState(pos, state, true);
+                        chunk.setBlockState(pos, state, STATE_MOVING);
                         continue;
                     }
 
                     if (y < floorHeight || height < y || isAllErasing) {
                         state = Blocks.AIR.getDefaultState();
-                        chunk.setBlockState(pos, state, true);
+                        chunk.setBlockState(pos, state, STATE_MOVING);
                         continue;
                     }
 
@@ -94,19 +98,19 @@ public final class FloatingIslandChunkGenerator extends NoiseChunkGenerator {
                         boolean c = getSqrt(x, z, 8, 8) >= factor;
                         if (c) {
                             state = Blocks.AIR.getDefaultState();
-                            chunk.setBlockState(pos, state, true);
+                            chunk.setBlockState(pos, state, STATE_MOVING);
                             continue;
                         } else {
                             if (current == Blocks.AIR.getDefaultState()) {
                                 state = Blocks.STONE.getDefaultState();
-                                chunk.setBlockState(pos, state, true);
+                                chunk.setBlockState(pos, state, STATE_MOVING);
                                 continue;
                             }
                         }
                     }
 
                     if (state == Blocks.WATER.getDefaultState()) {
-                        chunk.setBlockState(pos, Blocks.AIR.getDefaultState(), false);
+                        chunk.setBlockState(pos, Blocks.AIR.getDefaultState(), STATE_STATIC);
                         continue;
                     }
                 }
@@ -129,7 +133,7 @@ public final class FloatingIslandChunkGenerator extends NoiseChunkGenerator {
                     // force replacement
                     if (y <= this.getSeaLevel()) {
                         state = Blocks.WATER.getDefaultState();
-                        chunk.setBlockState(pos, state, true);
+                        chunk.setBlockState(pos, state, STATE_MOVING);
                     }
                 }
             }
